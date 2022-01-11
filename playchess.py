@@ -1,4 +1,5 @@
 import chess
+from copy import deepcopy
 
 maxDepth = 5
 
@@ -9,6 +10,7 @@ class Node(object):
         self.move = None
         self.children = []
         self.board = None
+        self.depth = 0
 
 
     def __str__(self, level=0):
@@ -30,6 +32,40 @@ class Node(object):
     			i+=1
 
 
+def getMove(gameBoard,n):
+    j = 0
+    for i in gameBoard.legal_moves:
+        if j == n:
+            return i
+        j = j+1
+
+def getNextMove(node):
+	#just add first move before end for now?
+	if node.depth < maxDepth:
+		nextMove = Node()
+		nextMove.move = getMove(node.board,0)
+		nextMove.board = deepcopy(node.board)
+		nextMove.board.push_san(str(nextMove.move))
+		nextMove.depth = deepcopy(node.depth) + 1
+		node.add_child(nextMove)
+		getNextMove(nextMove)
+	else:
+		print("depth = ",node.depth)
+
 board = chess.Board()
+game = Node()
 print(board)
+
+game.board = board
+
+#get bottom left nodes for now? before prune
+
+print(game.board.legal_moves)
+print(game)
+
+getNextMove(game)
+
+print(game)
+
+
 
