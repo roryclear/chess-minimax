@@ -58,8 +58,13 @@ def getMove(gameBoard,n):
             return i
         j = j+1
 
-def getNextMove(node):
+def getNextMove(node,parentNode):
 	#just add first move before end for now?
+	if node.depth % 2 == 0:
+		print("white")
+	else:
+		print("black")
+
 	if node.depth < maxDepth:
 		nextMove = Node()
 		nextMove.move = getMove(node.board,0)
@@ -67,7 +72,7 @@ def getNextMove(node):
 		nextMove.board.push_san(str(nextMove.move))
 		nextMove.depth = deepcopy(node.depth) + 1
 		node.add_child(nextMove)
-		node.value = getNextMove(nextMove)
+		node.value = getNextMove(nextMove,node)
 		return node.value	
 	else:
 		print("depth = ",node.depth)
@@ -85,7 +90,7 @@ game.board = board
 print(game.board.legal_moves)
 print(game)
 
-getNextMove(game)
+getNextMove(game,None)
 
 print(game)
 
