@@ -31,6 +31,25 @@ class Node(object):
     		else:
     			i+=1
 
+def eval(moves):
+	###### use Chess piece relative value from alphazero?? ######
+
+	#white only for now?
+	#PAWNS
+	board = moves.board
+
+	boardString = str(board)
+
+	if board.is_checkmate():
+		if moves.depth % 2 == 1: #white just moved??
+			return 420
+		else:
+			return -420
+
+	wv = boardString.count('P') + (boardString.count('N') * 3.05) + (boardString.count('B') * 3.33 + (boardString.count('R') * 5.63) + (boardString.count('Q') * 9.5))
+	bv = boardString.count('p') + (boardString.count('n') * 3.05) + (boardString.count('b') * 3.33 + (boardString.count('r') * 5.63) + (boardString.count('q') * 9.5))
+
+	return wv - bv
 
 def getMove(gameBoard,n):
     j = 0
@@ -48,9 +67,12 @@ def getNextMove(node):
 		nextMove.board.push_san(str(nextMove.move))
 		nextMove.depth = deepcopy(node.depth) + 1
 		node.add_child(nextMove)
-		getNextMove(nextMove)
+		node.value = getNextMove(nextMove)
+		return node.value	
 	else:
 		print("depth = ",node.depth)
+		node.value = eval(node)
+		return node.value	
 
 board = chess.Board()
 game = Node()
@@ -66,6 +88,9 @@ print(game)
 getNextMove(game)
 
 print(game)
+
+#pass up best value at last layer through all parents???
+#https://media.geeksforgeeks.org/wp-content/uploads/MIN_MAX2.jpg
 
 
 
