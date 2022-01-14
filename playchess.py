@@ -69,9 +69,8 @@ def getNextMove(node,parentNode):
 	#just add first move before end for now?		
 	if node.depth < maxDepth:
 		if node.depth % 2 == 0:
-			print("white")
+			#print("white")
 			for n in range(0,validMoves(node.board)):
-				print(n)
 				nextMove = Node()
 				nextMove.move = getMove(node.board,0)
 				nextMove.board = deepcopy(node.board)
@@ -80,11 +79,19 @@ def getNextMove(node,parentNode):
 				node.add_child(nextMove)
 				if node.value == None:
 					node.value = getNextMove(nextMove,node)
-				return node.value
+				else:
+					moveValue = getNextMove(nextMove,node)
+					if moveValue > node.value:
+						node.value = moveValue
+				if parentNode != None and parentNode.value != None:
+					if node.value >= parentNode.value:
+						node.value = parentNode.value
+						break
+
 		else:
-			print("black")
+			#print("black")
 			for n in range(0,validMoves(node.board)):
-				print(n)
+			#for n in range(0,2):
 				nextMove = Node()
 				nextMove.move = getMove(node.board,0)
 				nextMove.board = deepcopy(node.board)
@@ -92,10 +99,19 @@ def getNextMove(node,parentNode):
 				nextMove.depth = deepcopy(node.depth) + 1
 				node.add_child(nextMove)
 				if node.value == None:
-					node.value = getNextMove(nextMove,node)
-				return node.value	
+					node.value = getNextMove(nextMove,node)	
+				else:
+					moveValue = getNextMove(nextMove,node)
+					if moveValue < node.value:
+						node.value = moveValue
+				if parentNode != None and parentNode.value != None:
+					#print("parent is not none")
+					if node.value <= parentNode.value:
+						node.value = parentNode.value
+						break
+		return node.value
 	else:
-		print("depth = ",node.depth)
+		#print("depth = ",node.depth)
 		node.value = eval(node)
 		return node.value	
 
