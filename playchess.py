@@ -51,6 +51,13 @@ def eval(moves):
 
 	return wv - bv
 
+def validMoves(gameBoard):
+
+    m = 0
+    for i in gameBoard.legal_moves:
+        m = m+1
+    return m
+
 def getMove(gameBoard,n):
     j = 0
     for i in gameBoard.legal_moves:
@@ -62,8 +69,12 @@ def getNextMove(node,parentNode):
 	#just add first move before end for now?
 	if node.depth % 2 == 0:
 		print("white")
+		for n in range(0,validMoves(node.board)):
+			print(n)
 	else:
 		print("black")
+		for n in range(0,validMoves(node.board)):
+			print(n)
 
 	if node.depth < maxDepth:
 		nextMove = Node()
