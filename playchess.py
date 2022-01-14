@@ -72,7 +72,8 @@ def getNextMove(node,parentNode):
 		nextMove.board.push_san(str(nextMove.move))
 		nextMove.depth = deepcopy(node.depth) + 1
 		node.add_child(nextMove)
-		node.value = getNextMove(nextMove,node)
+		if node.value == None:
+			node.value = getNextMove(nextMove,node)
 		return node.value	
 	else:
 		print("depth = ",node.depth)
