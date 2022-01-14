@@ -72,7 +72,7 @@ def getNextMove(node,parentNode):
 			#print("white")
 			for n in range(0,validMoves(node.board)):
 				nextMove = Node()
-				nextMove.move = getMove(node.board,0)
+				nextMove.move = getMove(node.board,n)
 				nextMove.board = deepcopy(node.board)
 				nextMove.board.push_san(str(nextMove.move))
 				nextMove.depth = deepcopy(node.depth) + 1
@@ -87,13 +87,12 @@ def getNextMove(node,parentNode):
 					if node.value >= parentNode.value:
 						node.value = parentNode.value
 						break
-
 		else:
 			#print("black")
 			for n in range(0,validMoves(node.board)):
 			#for n in range(0,2):
 				nextMove = Node()
-				nextMove.move = getMove(node.board,0)
+				nextMove.move = getMove(node.board,n)
 				nextMove.board = deepcopy(node.board)
 				nextMove.board.push_san(str(nextMove.move))
 				nextMove.depth = deepcopy(node.depth) + 1
@@ -109,6 +108,8 @@ def getNextMove(node,parentNode):
 					if node.value <= parentNode.value:
 						node.value = parentNode.value
 						break
+		if node.value == None: #no valid moves
+			node.value = eval(node)
 		return node.value
 	else:
 		#print("depth = ",node.depth)
@@ -117,9 +118,46 @@ def getNextMove(node,parentNode):
 
 board = chess.Board()
 game = Node()
-print(board)
 
 game.board = board
+
+game.board.push_san("g2g3")
+game.board.push_san("g7g5")
+
+game.board.push_san("g1h3")
+game.board.push_san("h7h6")
+
+game.board.push_san("h3g1")
+game.board.push_san("h6h5")
+
+game.board.push_san("g1h3")
+game.board.push_san("f7f6")
+
+game.board.push_san("f1g2")
+game.board.push_san("e7e5")
+
+game.board.push_san("h3g1")
+game.board.push_san("f6f5")
+
+game.board.push_san("g2d5")
+game.board.push_san("c7c6")
+
+game.board.push_san("d5c4")
+game.board.push_san("d7d5")
+
+game.board.push_san("c4b3")
+game.board.push_san("b7b5")
+
+game.board.push_san("g1f3")
+game.board.push_san("f5f4")
+
+game.board.push_san("f3e5")
+game.board.push_san("f4g3")
+
+
+
+
+print(game.board)
 
 #get bottom left nodes for now? before prune
 
@@ -129,6 +167,10 @@ print(game)
 getNextMove(game,None)
 
 print(game)
+
+print("first moves???")
+for child in game.children:
+	print(child.move," -> ",child.value)
 
 #pass up best value at last layer through all parents???
 #https://media.geeksforgeeks.org/wp-content/uploads/MIN_MAX2.jpg
