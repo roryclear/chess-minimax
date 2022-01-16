@@ -3,7 +3,6 @@ from copy import deepcopy
 
 maxDepth = 5
 
-
 class Node(object):
     def __init__(self):
         self.value = None
@@ -66,11 +65,14 @@ def getMove(gameBoard,n):
         j = j+1
 
 def getNextMove(node,parentNode):
+	if node.depth == 1:
+		print("nodes")
 	#just add first move before end for now?		
 	if node.depth < maxDepth:
+		numberOfValidMoves = validMoves(node.board)
 		if node.depth % 2 == 0:
 			#print("white")
-			for n in range(0,validMoves(node.board)):
+			for n in range(0,numberOfValidMoves):
 				nextMove = Node()
 				nextMove.move = getMove(node.board,n)
 				nextMove.board = deepcopy(node.board)
@@ -87,9 +89,12 @@ def getNextMove(node,parentNode):
 					if node.value >= parentNode.value:
 						node.value = parentNode.value
 						break
+			if numberOfValidMoves == 0:
+				node.value = eval(node)
+				parentNode.value == node.value
 		else:
 			#print("black")
-			for n in range(0,validMoves(node.board)):
+			for n in range(0,numberOfValidMoves):
 			#for n in range(0,2):
 				nextMove = Node()
 				nextMove.move = getMove(node.board,n)
@@ -108,6 +113,9 @@ def getNextMove(node,parentNode):
 					if node.value <= parentNode.value:
 						node.value = parentNode.value
 						break
+			if numberOfValidMoves == 0:
+				node.value = eval(node)
+				parentNode.value == node.value
 		if node.value == None: #no valid moves
 			node.value = eval(node)
 		return node.value
@@ -121,56 +129,38 @@ game = Node()
 
 game.board = board
 
-game.board.push_san("g2g3")
-game.board.push_san("g7g5")
-
-game.board.push_san("g1h3")
-game.board.push_san("h7h6")
-
-game.board.push_san("h3g1")
-game.board.push_san("h6h5")
-
-game.board.push_san("g1h3")
-game.board.push_san("f7f6")
-
-game.board.push_san("f1g2")
-game.board.push_san("e7e5")
-
-game.board.push_san("h3g1")
-game.board.push_san("f6f5")
-
-game.board.push_san("g2d5")
-game.board.push_san("c7c6")
-
-game.board.push_san("d5c4")
-game.board.push_san("d7d5")
-
-game.board.push_san("c4b3")
-game.board.push_san("b7b5")
-
-game.board.push_san("g1f3")
-game.board.push_san("f5f4")
-
-game.board.push_san("f3e5")
-game.board.push_san("f4g3")
 
 
+while validMoves(game.board) > 0:
+	gameBoardCopy = deepcopy(game.board)
 
+	game = Node()
+	game.board = gameBoardCopy
 
-print(game.board)
+	print(game.board)
 
-#get bottom left nodes for now? before prune
+	#get bottom left nodes for now? before prune
 
-print(game.board.legal_moves)
-print(game)
+	print(game.board.legal_moves)
 
-getNextMove(game,None)
+	getNextMove(game,None)
 
-print(game)
+	#print(game)
+	print(game.board)
 
-print("first moves???")
-for child in game.children:
-	print(child.move," -> ",child.value)
+	print("first moves???")
+	value = -500
+	nextMove = None
+	for child in game.children:
+		print(child.move," -> ",child.value)
+		if child.value > value:
+			value = child.value
+			nextMove = child.move
+
+	print("nextMove = ",nextMove)
+	game.board.push_san(str(nextMove))
+	yourMove = input("Enter your move: ")
+	game.board.push_san(str(yourMove))
 
 #pass up best value at last layer through all parents???
 #https://media.geeksforgeeks.org/wp-content/uploads/MIN_MAX2.jpg
