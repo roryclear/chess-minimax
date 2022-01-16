@@ -91,7 +91,9 @@ def getNextMove(node,parentNode):
 						break
 			if numberOfValidMoves == 0:
 				node.value = eval(node)
-				parentNode.value == node.value
+				if parentNode != None and parentNode.value != None:
+					if node.value >= parentNode.value:
+						node.value = parentNode.value
 		else:
 			#print("black")
 			for n in range(0,numberOfValidMoves):
@@ -113,10 +115,13 @@ def getNextMove(node,parentNode):
 					if node.value <= parentNode.value:
 						node.value = parentNode.value
 						break
-			if numberOfValidMoves == 0:
+			if numberOfValidMoves == 0: #no valid moves
 				node.value = eval(node)
-				parentNode.value == node.value
-		if node.value == None: #no valid moves
+				if parentNode != None and parentNode.value != None:
+					#print("parent is not none")
+					if node.value <= parentNode.value:
+						node.value = parentNode.value
+		if node.value == None:
 			node.value = eval(node)
 		return node.value
 	else:
