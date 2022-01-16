@@ -50,6 +50,12 @@ def eval(moves):
 
 	return wv - bv
 
+def isValidMove(move,gameBoard):
+	for m in gameBoard.legal_moves:
+		if str(m) == str(move):
+			return True
+	return False
+
 def validMoves(gameBoard):
 
     m = 0
@@ -165,7 +171,11 @@ while validMoves(game.board) > 0:
 	print("nextMove = ",nextMove)
 	game.board.push_san(str(nextMove))
 	yourMove = input("Enter your move: ")
-	game.board.push_san(str(yourMove))
+	while isValidMove(yourMove,game.board) == False:
+		yourMove = input("that move is not valid, enter a different one: ")
+	else:
+		game.board.push_san(str(yourMove))
+
 
 #pass up best value at last layer through all parents???
 #https://media.geeksforgeeks.org/wp-content/uploads/MIN_MAX2.jpg
