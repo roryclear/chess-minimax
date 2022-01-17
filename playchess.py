@@ -48,7 +48,7 @@ def eval(moves):
 	wv = boardString.count('P') + (boardString.count('N') * 3.05) + (boardString.count('B') * 3.33 + (boardString.count('R') * 5.63) + (boardString.count('Q') * 9.5))
 	bv = boardString.count('p') + (boardString.count('n') * 3.05) + (boardString.count('b') * 3.33 + (boardString.count('r') * 5.63) + (boardString.count('q') * 9.5))
 
-	return wv - bv
+	return round((wv - bv),2)
 
 def isValidMove(move,gameBoard):
 	for m in gameBoard.legal_moves:
