@@ -170,6 +170,7 @@ while validMoves(game.board) > 0:
 
 	print("nextMove = ",nextMove)
 	game.board.push_san(str(nextMove))
+	print(game.board)
 	yourMove = input("Enter your move: ")
 	while isValidMove(yourMove,game.board) == False:
 		yourMove = input("that move is not valid, enter a different one: ")
